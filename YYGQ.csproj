@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <LangVersion>latest</LangVersion>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>disable</ImplicitUsings>
+        <AssemblyName>YYGQ</AssemblyName>
+        <RootNamespace>YYGQ</RootNamespace>
+        <!-- MelonLoader discovers the mod through [MelonInfo], which is hand-written in
+             src/Properties/AssemblyInfo.cs, so the SDK must not generate a competing one. -->
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <!-- All source lives under src/; keep the SDK's default glob from sweeping anything else. -->
+        <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <Compile Include="src\**\*.cs" />
+        <!-- The skin art is embedded so the mod ships as a single self-contained YYGQ.dll. Each PNG is
+             exposed as "YYGQ.<filename>.png" (see JudgmentSkin). -->
+        <EmbeddedResource Include="assets\*.png">
+            <LogicalName>YYGQ.%(Filename)%(Extension)</LogicalName>
+        </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

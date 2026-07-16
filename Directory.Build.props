@@ -1,0 +1,33 @@
+<Project>
+    <!--
+        Game + MelonLoader assembly references, resolved from a local Muse Dash install so no machine
+        path is baked into the project. Point MD_DIRECTORY (or MD_NET6_DIRECTORY) at your Muse Dash
+        folder — the one containing the MelonLoader directory — before building. Requires MelonLoader
+        0.7.3 (Il2Cpp) installed, which generates the Il2CppAssemblies referenced below.
+    -->
+    <PropertyGroup>
+        <GameFolder Condition="Exists('$(MD_NET6_DIRECTORY)')">$(MD_NET6_DIRECTORY)</GameFolder>
+        <GameFolder Condition="Exists('$(MD_DIRECTORY)')">$(MD_DIRECTORY)</GameFolder>
+        <MelonNet6>$(GameFolder)\MelonLoader\net6\</MelonNet6>
+        <Il2CppAssemblies>$(GameFolder)\MelonLoader\Il2CppAssemblies\</Il2CppAssemblies>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <!-- MelonLoader runtime + Harmony + the Il2Cpp interop layer. -->
+        <Reference Include="MelonLoader" HintPath="$(MelonNet6)MelonLoader.dll" Private="false" />
+        <Reference Include="0Harmony" HintPath="$(MelonNet6)0Harmony.dll" Private="false" />
+        <Reference Include="Il2CppInterop.Runtime" HintPath="$(MelonNet6)Il2CppInterop.Runtime.dll" Private="false" />
+
+        <!-- Il2Cpp base library — the root Il2CppSystem.Object that every game type derives from. -->
+        <Reference Include="Il2Cppmscorlib" HintPath="$(Il2CppAssemblies)Il2Cppmscorlib.dll" Private="false" />
+
+        <!-- The game's own code: Effect (PeroTools.Managers), the score/judgment effects. -->
+        <Reference Include="Assembly-CSharp" HintPath="$(Il2CppAssemblies)Assembly-CSharp.dll" Private="false" />
+
+        <!-- Unity: GameObject / SpriteRenderer / Sprite / Texture2D, PNG decode, TMP + UGUI. -->
+        <Reference Include="UnityEngine.CoreModule" HintPath="$(Il2CppAssemblies)UnityEngine.CoreModule.dll" Private="false" />
+        <Reference Include="UnityEngine.ImageConversionModule" HintPath="$(Il2CppAssemblies)UnityEngine.ImageConversionModule.dll" Private="false" />
+        <Reference Include="Unity.TextMeshPro" HintPath="$(Il2CppAssemblies)Unity.TextMeshPro.dll" Private="false" />
+        <Reference Include="UnityEngine.UI" HintPath="$(Il2CppAssemblies)UnityEngine.UI.dll" Private="false" />
+    </ItemGroup>
+</Project>
