@@ -6,8 +6,8 @@ mod that ships as a single, self-contained DLL.
 
 ## What it does
 
-- **Judgment words** — `PERFECT` → `NB!`, `GREAT` → `SB?`, `PASS` → its icon, including the fever/gold
-  variants (foreground **and** background layer).
+- **Judgment words** — `PERFECT` → `NB!`, `GREAT` → `SB?`, `PASS` → `¿` (an upside-down question mark),
+  including the fever/gold variants of `PERFECT` and `GREAT` (foreground **and** background layer).
 - **Note-pickup score** — the `+200 / +600` number becomes `TQL`, and the overlay fades in and out
   with the original animation instead of cutting.
 - **DJMax-aware** — when the battle runs in the DJMax score style, the dedicated DJMax art is used;
