@@ -10,7 +10,7 @@ namespace YYGQ;
 public class Main : MelonMod
 {
     public const string Name = "YYGQ";
-    public const string Version = "0.1.0";
+    public const string Version = "0.0.1";
     public const string Author = "KARPED1EM & Doushabo";
 
     internal static MelonLogger.Instance Log { get; private set; } = null!;
@@ -32,9 +32,10 @@ public class Main : MelonMod
 
     // Drive the pickup overlay's fade after the game's animation pass. Guarded: a hiccup here must
     // never break the frame — the worst case is one pickup that does not fade.
-    public override void OnLateUpdate()
-    {
-        try { ScoreEffectPatch.PumpPickupFade(); }
-        catch (System.Exception) { /* never break the frame over a fade */ }
-    }
+    
+    // public override void OnLateUpdate()
+    // {
+    //     try { ScoreEffectPatch.PumpPickupFade(); }
+    //     catch (System.Exception) { /* never break the frame over a fade */ }
+    // }
 }

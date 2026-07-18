@@ -19,7 +19,7 @@ namespace YYGQ;
 /// </summary>
 internal static class JudgmentSkin
 {
-    internal enum Style { Default, Djmax }
+    internal enum Style { Default, DJMax, GC, Touhou }
 
     // The word-sprite identities we replace. Default art is embedded as "<id>.png" and the djmax
     // variant as "<id>_djmax.png"; a missing djmax variant falls back to the default.
@@ -27,17 +27,20 @@ internal static class JudgmentSkin
     {
         "ScorePerfect", "ScoreGreat", "ScorePass",
         "GoldPerfect", "GoldPerfectBg", "GoldGreat", "GoldGreatBg",
+        "Early", "Late",
     };
 
     private static readonly Dictionary<string, Sprite> DefaultArt = new();
     private static readonly Dictionary<string, Sprite> DjmaxArt = new();
-    private static Sprite? _pickup; // TQL, theme-agnostic
+    private static readonly Dictionary<string, Sprite> GCArt = new();
+    private static readonly Dictionary<string, Sprite> TouhouArt = new();
+    // private static Sprite? _pickup; // TQL, theme-agnostic
 
     private static bool _loaded;
     private static bool _styleResolved;
 
-    internal static bool HasArt => DefaultArt.Count > 0 || DjmaxArt.Count > 0;
-    internal static Sprite? Pickup => _pickup;
+    internal static bool HasArt => DefaultArt.Count > 0 || DjmaxArt.Count > 0 || GCArt.Count > 0 || TouhouArt.Count > 0;
+    // internal static Sprite? Pickup => _pickup;
     internal static Style Current { get; private set; } = Style.Default;
 
     /// <summary>Decode the embedded art once. Textures are pinned against UnloadUnusedAssets.</summary>
@@ -49,9 +52,11 @@ internal static class JudgmentSkin
         {
             if (TryLoad(id, out var d)) DefaultArt[id] = d;
             if (TryLoad(id + "_djmax", out var j)) DjmaxArt[id] = j;
+            if (TryLoad(id + "GC", out var g)) GCArt[id] = g;
+            if (TryLoad(id + "_touhou_black",  out var t)) TouhouArt[id] = t;
         }
-        TryLoad("note", out _pickup);
-        Main.Log.Msg($"skin loaded — default {DefaultArt.Count}/{WordIdentities.Length}, djmax {DjmaxArt.Count}, pickup {_pickup != null}");
+        // TryLoad("note", out _pickup);
+        Main.Log.Msg($"skin loaded — default {DefaultArt.Count}/{WordIdentities.Length}, djmax {DjmaxArt.Count}, GC {GCArt.Count}, Touhou {TouhouArt.Count}");
     }
 
     /// <summary>Arm score-style re-detection for a new run (resolved lazily on the first judgment).</summary>
@@ -67,9 +72,25 @@ internal static class JudgmentSkin
     /// </summary>
     internal static void EnsureStyleResolved()
     {
+        // bool tag = false;
         if (_styleResolved) return;
         _styleResolved = true;
-        Current = IsDjmaxStyle() ? Style.Djmax : Style.Default;
+        // Current = IsDjmaxStyle() ? Style.DJMax : Style.Default;
+        // if (IsDjmaxStyle()) Current = Style.DJMax; tag = true;
+        // if (IsGCStyle()) Current = Style.GC; tag = true;
+        // if (IsTouhouStyle()) Current = Style.Touhou; tag = true;
+        //
+        // if (!tag)
+        // {
+        //     Current = Style.Default;
+        // }
+        //
+        // tag = false;
+        Current = IsDjmaxStyle() ? Style.DJMax
+            : IsGCStyle() ? Style.GC
+            : IsTouhouStyle() ? Style.Touhou
+            : Style.Default;
+        
         Main.Log.Msg($"score style = {Current}");
     }
 
@@ -79,9 +100,20 @@ internal static class JudgmentSkin
         var kind = spriteName.Contains("Perfect") ? "Perfect"
             : spriteName.Contains("Great") ? "Great"
             : spriteName.Contains("Pass") ? "Pass"
+            : spriteName.Contains("Early") ? "Early"
+            : spriteName.Contains("Late") ? "Late"
             : null;
+        // var kind = spriteName.Contains("Early") ? "Early"
+        //     : spriteName.Contains("Late") ? "Late"
+        //     : spriteName.Contains("Perfect") ? "Perfect"
+        //     : spriteName.Contains("Great") ? "Great"
+        //     : spriteName.Contains("Pass") ? "Pass"
+        //     : null;
         if (kind == null) return null;
-        var prefix = spriteName.Contains("Gold") ? "Gold" : "Score";
+        // var prefix = spriteName.Contains("Gold") ? "Gold" : "Score";
+        var prefix = spriteName.Contains("Gold") ? "Gold" 
+            : spriteName.Contains("Score") ? "Score" : string.Empty;
+            
         var background = spriteName.Contains("Bg") ? "Bg" : string.Empty;
         return prefix + kind + background;
     }
@@ -89,7 +121,10 @@ internal static class JudgmentSkin
     /// <summary>The replacement sprite for an identity under the current style, or null to leave it.</summary>
     internal static Sprite? Resolve(string identity)
     {
-        if (Current == Style.Djmax && DjmaxArt.TryGetValue(identity, out var djmax)) return djmax;
+        if (Current == Style.DJMax && DjmaxArt.TryGetValue(identity, out var djmax)) return djmax;
+        if (Current == Style.GC && GCArt.TryGetValue(identity, out var gc)) return gc;
+        if (Current == Style.Touhou &&  TouhouArt.TryGetValue(identity, out var touhou)) return touhou;
+
         return DefaultArt.TryGetValue(identity, out var fallback) ? fallback : null;
     }
 
@@ -109,6 +144,22 @@ internal static class JudgmentSkin
         }
         return false;
     }
+
+    private static bool IsGCStyle()
+    {
+        var ui = GameObject.Find("UI_2D/Standard/PnlBattle/PnlBattleUI");
+        if (ui == null) return false;
+        var root = ui.transform;
+        for (var i = 0; i < root.childCount; i++)
+        {
+            var panel = root.GetChild(i);
+            if (!panel.gameObject.activeSelf) continue;
+            var djmax = panel.Find("Score/GC");
+            if (djmax != null && djmax.gameObject.activeInHierarchy) return true;
+        }
+        return false;
+    }
+    private static bool IsTouhouStyle(){return false;}
 
     private static bool TryLoad(string id, out Sprite sprite)
     {
