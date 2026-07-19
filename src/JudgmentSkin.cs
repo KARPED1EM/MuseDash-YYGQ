@@ -159,7 +159,21 @@ internal static class JudgmentSkin
         }
         return false;
     }
-    private static bool IsTouhouStyle(){return false;}
+
+    private static bool IsTouhouStyle()
+    {
+        var ui = GameObject.Find("SceneObjectController");
+        if (ui == null) return false;
+        var root = ui.transform;
+        for (var i = 0; i < root.childCount; i++)
+        {
+            var panel = root.GetChild(i);
+            if (!panel.gameObject.activeSelf) continue;
+            var djmax = panel.Find("Touhou_black");
+            if (djmax != null && djmax.gameObject.activeInHierarchy) return true;
+        }
+        return false;
+    }
 
     private static bool TryLoad(string id, out Sprite sprite)
     {
