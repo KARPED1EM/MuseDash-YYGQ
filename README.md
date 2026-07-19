@@ -5,7 +5,8 @@
 - [x] Default
 - [x] DJMax
 - [x] GC
-- [ ] Touhou
+- [x] Touhou
+- [ ] Note && ❤
 - [ ] 将图片赶出Assets
 
 ## Credits
