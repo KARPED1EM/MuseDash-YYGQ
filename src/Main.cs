@@ -9,10 +9,6 @@ namespace YYGQ;
 /// </summary>
 public class Main : MelonMod
 {
-    public const string Name = "YYGQ";
-    public const string Version = "0.0.1";
-    public const string Author = "KARPED1EM & Doushabo";
-
     internal static MelonLogger.Instance Log { get; private set; } = null!;
 
     public override void OnInitializeMelon()

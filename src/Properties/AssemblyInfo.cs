@@ -1,11 +1,12 @@
 using System.Reflection;
 using MelonLoader;
+using Main =  YYGQ.Main;
 
-[assembly: AssemblyTitle(YYGQ.Main.Name)]
-[assembly: AssemblyProduct(YYGQ.Main.Name)]
-[assembly: AssemblyVersion(YYGQ.Main.Version + ".0")]
-[assembly: AssemblyFileVersion(YYGQ.Main.Version + ".0")]
-
-[assembly: MelonInfo(typeof(YYGQ.Main), YYGQ.Main.Name, YYGQ.Main.Version, YYGQ.Main.Author)]
+[assembly: AssemblyTitle(Name)]
+[assembly: AssemblyDescription(Description)]
+[assembly: AssemblyCompany(Name)]
+[assembly: AssemblyVersion(ModVersion)]
+[assembly: AssemblyFileVersion(ModVersion)]
+[assembly: MelonInfo(typeof(Main), Name, ModVersion, Author)]
 [assembly: MelonGame("PeroPeroGames", "MuseDash")]
 [assembly: MelonColor(255, 255, 105, 180)]

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using HarmonyLib;
 using Il2CppAssets.Scripts.PeroTools.Managers;
-using Il2CppTMPro;
+// using Il2CppTMPro;
 using UnityEngine;
 
 namespace YYGQ;
