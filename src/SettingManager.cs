@@ -5,11 +5,13 @@ namespace YYGQ;
 
 internal static class SettingManager
 {
-    private static readonly string configPath = Path.Combine(MelonEnvironment.UserDataDirectory, $"{Name}.cfg");
-    private static readonly string effectPath = Path.Combine("UserData", "BattleEffects");
+    internal static readonly string configPath = Path.Combine(MelonEnvironment.UserDataDirectory, $"{Name}.cfg");
+    internal static readonly string effectPath = Path.Combine("UserData", "BattleEffects");
 
     private static MelonPreferences_Entry<Data> _setting;
     private static Data Setting => _setting.Value;
+
+    internal static string EffectPackPath => Path.Combine(effectPath, Setting.CurrentEffect);
 
     internal static void Register()
     {

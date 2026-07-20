@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using UnityEngine;
 
 namespace YYGQ;
@@ -36,26 +35,28 @@ internal static class JudgmentSkin
     private static readonly Dictionary<string, Sprite> TouhouArt = new();
     // private static Sprite? _pickup; // TQL, theme-agnostic
 
-    private static bool _loaded;
     private static bool _styleResolved;
 
     internal static bool HasArt => DefaultArt.Count > 0 || DjmaxArt.Count > 0 || GCArt.Count > 0 || TouhouArt.Count > 0;
     // internal static Sprite? Pickup => _pickup;
     internal static Style Current { get; private set; } = Style.Default;
 
-    /// <summary>Decode the embedded art once. Textures are pinned against UnloadUnusedAssets.</summary>
+    /// <summary>Load art from the current effect pack directory. Clears and reloads on every
+    ///     battle enter so a config change takes effect next run.</summary>
     internal static void EnsureLoaded()
     {
-        if (_loaded) return;
-        _loaded = true;
+        DefaultArt.Clear();
+        DjmaxArt.Clear();
+        GCArt.Clear();
+        TouhouArt.Clear();
+
         foreach (var id in WordIdentities)
         {
-            if (TryLoad(id, out var d)) DefaultArt[id] = d;
-            if (TryLoad(id + "_djmax", out var j)) DjmaxArt[id] = j;
-            if (TryLoad(id + "GC", out var g)) GCArt[id] = g;
-            if (TryLoad(id + "_touhou_black",  out var t)) TouhouArt[id] = t;
+            if (TryLoad($"Default/{id}.png", out var d)) DefaultArt[id] = d;
+            if (TryLoad($"DJMax/{id}_djmax.png", out var j)) DjmaxArt[id] = j;
+            if (TryLoad($"GC/{id}GC.png", out var g)) GCArt[id] = g;
+            if (TryLoad($"Touhou/{id}_touhou_black.png", out var t)) TouhouArt[id] = t;
         }
-        // TryLoad("note", out _pickup);
         Main.Log.Msg($"skin loaded — default {DefaultArt.Count}/{WordIdentities.Length}, djmax {DjmaxArt.Count}, GC {GCArt.Count}, Touhou {TouhouArt.Count}");
     }
 
@@ -103,12 +104,7 @@ internal static class JudgmentSkin
             : spriteName.Contains("Early") ? "Early"
             : spriteName.Contains("Late") ? "Late"
             : null;
-        // var kind = spriteName.Contains("Early") ? "Early"
-        //     : spriteName.Contains("Late") ? "Late"
-        //     : spriteName.Contains("Perfect") ? "Perfect"
-        //     : spriteName.Contains("Great") ? "Great"
-        //     : spriteName.Contains("Pass") ? "Pass"
-        //     : null;
+
         if (kind == null) return null;
         // var prefix = spriteName.Contains("Gold") ? "Gold" : "Score";
         var prefix = spriteName.Contains("Gold") ? "Gold" 
@@ -127,6 +123,8 @@ internal static class JudgmentSkin
 
         return DefaultArt.TryGetValue(identity, out var fallback) ? fallback : null;
     }
+
+
 
     // The active battle panel (PnlBattleOthers / Wisadel / Bloodheir / …) carries the live style's
     // Score sub-panel; djmax is on when that panel's Score/Djmax is active in the hierarchy.
@@ -175,13 +173,15 @@ internal static class JudgmentSkin
         return false;
     }
 
-    private static bool TryLoad(string id, out Sprite sprite)
+    private static bool TryLoad(string fileName, out Sprite sprite)
     {
         sprite = null!;
         try
         {
-            var bytes = ReadEmbedded($"YYGQ.{id}.png");
-            if (bytes == null) return false;
+            var filePath = Path.Combine(SettingManager.EffectPackPath, fileName);
+            // Main.Log.Msg($"now {filePath}");
+            if (!File.Exists(filePath)) return false;
+            var bytes = File.ReadAllBytes(filePath);
             var texture = new Texture2D(2, 2, TextureFormat.RGBA32, false) { wrapMode = TextureWrapMode.Clamp };
             if (!ImageConversion.LoadImage(texture, bytes)) return false;
             texture.hideFlags = HideFlags.DontUnloadUnusedAsset;
@@ -193,17 +193,9 @@ internal static class JudgmentSkin
         }
         catch (Exception e)
         {
-            Main.Log.Warning($"failed to load '{id}': {e.Message}");
+            Main.Log.Warning($"failed to load '{fileName}': {e.Message}");
             return false;
         }
     }
 
-    private static byte[]? ReadEmbedded(string resourceName)
-    {
-        using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName);
-        if (stream == null) return null;
-        using var buffer = new MemoryStream();
-        stream.CopyTo(buffer);
-        return buffer.ToArray();
-    }
 }
