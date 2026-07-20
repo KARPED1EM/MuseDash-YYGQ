@@ -1,5 +1,6 @@
 global using HarmonyLib;
 global using MelonLoader;
+global using Tomlet;
 global using MelonLoader.Utils;
 // global using MuseDashMirror.Attributes;
 // global using MuseDashMirror.Attributes.EventAttributes.PatchEvents;
@@ -7,6 +8,7 @@ global using MelonLoader.Utils;
 // global using MuseDashMirror.EventArguments;
 // global using MuseDashMirror.Extensions.UnityExtensions;
 global using static YYGQ.MelonBuildInfo;
+global using static YYGQ.SettingManager;
 // global using static MuseDashMirror.UIComponents.Colors;
 // global using static MuseDashMirror.UIComponents.Fonts;
 // global using static MuseDashMirror.Utils.GameObjectUtils;
