@@ -29,5 +29,7 @@
         <Reference Include="UnityEngine.ImageConversionModule" HintPath="$(Il2CppAssemblies)UnityEngine.ImageConversionModule.dll" Private="false" />
         <Reference Include="Unity.TextMeshPro" HintPath="$(Il2CppAssemblies)Unity.TextMeshPro.dll" Private="false" />
         <Reference Include="UnityEngine.UI" HintPath="$(Il2CppAssemblies)UnityEngine.UI.dll" Private="false" />
+
+        <Reference Include="Tomlet"><HintPath>$(MD_DIRECTORY)\MelonLoader\net6\Tomlet.dll</HintPath></Reference>
     </ItemGroup>
 </Project>
