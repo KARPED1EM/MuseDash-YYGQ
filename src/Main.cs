@@ -1,5 +1,3 @@
-using MelonLoader;
-
 namespace YYGQ;
 
 /// <summary>
@@ -13,6 +11,7 @@ public class Main : MelonMod
 
     public override void OnInitializeMelon()
     {
+        SettingManager.Register();
         Log = LoggerInstance;
         // MelonMod auto-applies the [HarmonyPatch] classes in this assembly; nothing else to wire up.
     }
