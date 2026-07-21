@@ -5,8 +5,8 @@
         <LangVersion>latest</LangVersion>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <AssemblyName>YYGQ</AssemblyName>
-        <RootNamespace>YYGQ</RootNamespace>
+        <AssemblyName>CustomHitEffect</AssemblyName>
+        <RootNamespace>CustomHitEffect</RootNamespace>
         <!-- MelonLoader discovers the mod through [MelonInfo], which is hand-written in
              src/Properties/AssemblyInfo.cs, so the SDK must not generate a competing one. -->
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>

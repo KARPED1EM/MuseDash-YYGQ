@@ -2,7 +2,7 @@ namespace YYGQ;
 
 internal static class MelonBuildInfo
 {
-    internal const string Name = "YYGQ";
+    internal const string Name = "CustomHitEffect";
     
     internal const string Description = "";
 
