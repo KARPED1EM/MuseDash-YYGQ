@@ -7,7 +7,7 @@
 - [x] GC
 - [x] Touhou
 - [ ] Note && ❤
-- [ ] 将图片赶出Assets
+- [x] 将图片赶出Assets
 
 ## Credits
 
