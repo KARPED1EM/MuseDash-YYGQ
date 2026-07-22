@@ -117,10 +117,19 @@ internal static class JudgmentSkin
     /// <summary>The replacement sprite for an identity under the current style, or null to leave it.</summary>
     internal static Sprite? Resolve(string identity)
     {
-        if (Current == Style.DJMax && DjmaxArt.TryGetValue(identity, out var djmax)) return djmax;
-        if (Current == Style.GC && GCArt.TryGetValue(identity, out var gc)) return gc;
-        if (Current == Style.Touhou &&  TouhouArt.TryGetValue(identity, out var touhou)) return touhou;
-
+        // if (Current == Style.DJMax && DjmaxArt.TryGetValue(identity, out var djmax)) return djmax;
+        // if (Current == Style.GC && GCArt.TryGetValue(identity, out var gc)) return gc;
+        // if (Current == Style.Touhou &&  TouhouArt.TryGetValue(identity, out var touhou)) return touhou;
+        //
+        // return DefaultArt.TryGetValue(identity, out var fallback) ? fallback : null;
+        
+        if (Current == Style.DJMax)
+            return DjmaxArt.TryGetValue(identity, out var djmax) ? djmax : null;
+        if (Current == Style.GC)
+            return GCArt.TryGetValue(identity, out var gc) ? gc : null;
+        if (Current == Style.Touhou)
+            return TouhouArt.TryGetValue(identity, out var touhou) ? touhou : null;
+        
         return DefaultArt.TryGetValue(identity, out var fallback) ? fallback : null;
     }
 
