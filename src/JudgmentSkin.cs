@@ -52,12 +52,12 @@ internal static class JudgmentSkin
 
         foreach (var id in WordIdentities)
         {
-            if (TryLoad($"Default/{id}.png", out var d)) DefaultArt[id] = d;
-            if (TryLoad($"DJMax/{id}_djmax.png", out var j)) DjmaxArt[id] = j;
-            if (TryLoad($"GC/{id}GC.png", out var g)) GCArt[id] = g;
-            if (TryLoad($"Touhou/{id}_touhou_black.png", out var t)) TouhouArt[id] = t;
+            if (TryLoad($"Default\\{id}.png", out var d)) DefaultArt[id] = d;
+            if (TryLoad($"DJMax\\{id}_djmax.png", out var j)) DjmaxArt[id] = j;
+            if (TryLoad($"GC\\{id}GC.png", out var g)) GCArt[id] = g;
+            if (TryLoad($"Touhou\\{id}_touhou_black.png", out var t)) TouhouArt[id] = t;
         }
-        Main.Log.Msg($"skin loaded — default {DefaultArt.Count}/{WordIdentities.Length}, djmax {DjmaxArt.Count}, GC {GCArt.Count}, Touhou {TouhouArt.Count}");
+        Main.Log.Msg($"skin loaded | default {DefaultArt.Count}/{WordIdentities.Length}, djmax {DjmaxArt.Count}, GC {GCArt.Count}, Touhou {TouhouArt.Count}");
     }
 
     /// <summary>Arm score-style re-detection for a new run (resolved lazily on the first judgment).</summary>
